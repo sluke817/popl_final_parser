@@ -1,7 +1,7 @@
 # popl_final_parser
 
-# # Group Members: 
+## Group Members: 
 Luke Schaefer, Landon Vowels, Nick Kanatzar, Cam Day
 
-# # Language:
+## Language:
 Python
