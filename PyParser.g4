@@ -26,15 +26,16 @@ arith_operator: '+' | '-' | '*' | '/' | '%' ;
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9])* ;
 
-INT : [0-9]+ ;
 
 // STRING can have single or double quotes
-STRING : '\'' CHAR* '\'' 
-        | '"' CHAR* '"' ;
+STRING : '\'' (CHAR | INT)* '\'' 
+        | '"' (CHAR | INT)* '"' ;
 
-CHAR : [a-z] | [A-Z] | [0-9] ;
+CHAR : [a-z] | [A-Z];
+INT : [0-9]+ ;
 
 // TODO: Need to somehow account for the indentation sensitivity in Python
 WS : [ \t\f]+ -> skip ;
 
 NEWLINE : [\r\n] ;
+
