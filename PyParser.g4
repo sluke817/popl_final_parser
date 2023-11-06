@@ -1,3 +1,8 @@
+// ** TO DO ***
+// Type checking???
+// Array handling -> same type throughout
+// Booleans
+
 grammar PyParser;
 prog: statements EOF;
 
@@ -6,20 +11,28 @@ statements: (statement)+ ;
 /* Statements like assignments and arithmetic can be written on the same line,
    or separated by newlines. These are the 'simple statements.'
 */
-statement: block | (simple (';' simple)* ';'? NEWLINE) ;
+statement: block | (assignment (';' assignment)* ';'? NEWLINE) ;
 
 // block is just a placeholder for when we eventually add if, while, etc.
 block: VAR ;
 
-simple: assignment | arithmetic ;
+assignment: number_assignment | string_assignment
 
-assignment: VAR asgn_operator (INT | STRING) ;
+// integer assignments
+number_assignment: VAR asgn_operator (NUMBER | arithmetic | VAR) ;
+
+// string assignments
+string_assignment: VAR ('=' | '+=') (STRING | concat | VAR) ;
 
 asgn_operator: '=' | '+=' | '-=' | '*=' | '/=' ;
 
 // handling for doubles/floats and variables tbd
-arithmetic: INT arith_operator INT ;
+arithmetic: NUMBER arith_operator NUMBER ;
 
+// concatonation of strings
+concat: STRING ('+') STRING ;
+
+// basic arithmetic operators
 arith_operator: '+' | '-' | '*' | '/' | '%' ;
 
 
@@ -32,6 +45,8 @@ STRING : '\'' (CHAR | INT)* '\''
         | '"' (CHAR | INT)* '"' ;
 
 CHAR : [a-z] | [A-Z];
+NUMBER : INT | FLOAT
+FLOAT (INT)* '.' (INT)+
 INT : [0-9]+ ;
 
 // TODO: Need to somehow account for the indentation sensitivity in Python
