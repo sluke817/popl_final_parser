@@ -16,13 +16,16 @@ statement: block | (assignment (';' assignment)* ';'? NEWLINE) ;
 // block is just a placeholder for when we eventually add if, while, etc.
 block: VAR ;
 
-assignment: number_assignment | string_assignment
+assignment: number_assignment | string_assignment | array_assignment ;
 
 // integer assignments
 number_assignment: VAR asgn_operator (NUMBER | arithmetic | VAR) ;
 
 // string assignments
 string_assignment: VAR ('=' | '+=') (STRING | concat | VAR) ;
+
+// array assignments
+array_assignment: VAR '=' ARRAY;
 
 asgn_operator: '=' | '+=' | '-=' | '*=' | '/=' ;
 
@@ -39,6 +42,10 @@ arith_operator: '+' | '-' | '*' | '/' | '%' ;
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9])* ;
 
+// ARRAY of single type
+ARRAY: '[' ((STRING ',')* STRING | STRING) ']'
+        | '[' ((INT ',')* INT | INT) ']' 
+        | '[' ((FLOAT ',')* FLOAT | FLOAT) ']';
 
 // STRING can have single or double quotes
 STRING : '\'' (CHAR | INT)* '\'' 
