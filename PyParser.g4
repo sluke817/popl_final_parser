@@ -43,9 +43,10 @@ arith_operator: '+' | '-' | '*' | '/' | '%' ;
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9])* ;
 
 // ARRAY of single type
-ARRAY: '[' ((STRING ',')* STRING | STRING) ']'
-        | '[' ((INT ',')* INT | INT) ']' 
-        | '[' ((FLOAT ',')* FLOAT | FLOAT) ']';
+ARRAY: '[' (((STRING ',')+ STRING) | STRING) ']'
+        | '[' (((INT ',')+ INT) | INT) ']' 
+        | '[' (((FLOAT ',')+ FLOAT) | FLOAT) ']'
+        | '[' ']' ;
 
 // STRING can have single or double quotes
 STRING : '\'' (CHAR | INT)* '\'' 
