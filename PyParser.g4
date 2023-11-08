@@ -6,7 +6,7 @@ statements: (statement)+ ;
 /* Statements like assignments and arithmetic can be written on the same line,
    or separated by newlines. These are the 'simple statements.'
 */
-statement: block | (assignment (';' assignment)* ';'?)* NEWLINE ;
+statement: block | (assignment (';' assignment)* ';'? NEWLINE) ;
 
 // block is just a placeholder for when we eventually add if, while, etc.
 block: VAR ;
@@ -14,7 +14,7 @@ block: VAR ;
 assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
 // integer assignments
-number_assignment: VAR ASSIGN_OP ((INT | FLOAT) | arithmetic | VAR) ;
+number_assignment: VAR ASSIGN_OP (NUMBER | arithmetic | VAR) ;
 
 // string assignments
 string_assignment: VAR ('=' | '+=') (STRING | concat | VAR) ;
@@ -26,7 +26,7 @@ array_assignment: VAR '=' ARRAY;
 boolean_assignment: VAR '=' boolean_expression ;
 
 // handling for doubles/floats and variables tbd
-arithmetic: (INT | FLOAT) ARITH_OP (INT | FLOAT) ;
+arithmetic: NUMBER ARITH_OP NUMBER ;
 
 // concatenation of strings
 concat: STRING ('+') STRING ;
@@ -43,8 +43,7 @@ VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9])* ;
 
 // basic arithmetic operators
 ARITH_OP: '+' | '-' | '*' | '/' | '%' ;
-//ASSIGN_OP: '=' | '+=' | '-=' | '*=' | '/=' ;
-ASSIGN_OP : (ARITH_OP)? '=' ;
+ASSIGN_OP: '=' | '+=' | '-=' | '*=' | '/=' ;
 
 // boolean operators
 AND: 'and' ;
@@ -53,15 +52,19 @@ NOT: 'not' ;
 BOOL_OP: AND | OR ;
 
 // ARRAY of single type
-ARRAY: '[' ((STRING (',' STRING)*) | (INT (',' INT)*) | (FLOAT (',' FLOAT)*) | (BOOLEAN (',' BOOLEAN)*))* ']' ;
+ARRAY: '[' (((STRING ',')+ STRING) | STRING) ']'
+        | '[' (((INT ',')+ INT) | INT) ']' 
+        | '[' (((FLOAT ',')+ FLOAT) | FLOAT) ']'
+        | '[' ']' ;
 
 // STRING can have single or double quotes
 STRING : '\'' (CHAR | INT)* '\'' 
         | '"' (CHAR | INT)* '"' ;
 
-FLOAT : (INT)+ '.' (INT)+ ;
-INT : [0-9]+ ;
 CHAR : [a-z] | [A-Z] ;
+NUMBER : INT | FLOAT ;
+FLOAT : (INT)* '.' (INT)+ ;
+INT : [0-9]+ ;
 BOOLEAN : TRUE | FALSE ;
 
 // BOOLEAN can be True or False
@@ -69,8 +72,9 @@ TRUE: 'True';
 FALSE: 'False';
 
 // TODO: Need to somehow account for the indentation sensitivity in Python
-// currently skips any space before or between characters
 WS : [ \t\f]+ -> skip ;
 
 NEWLINE : [\r\n] ;
+
+
 
