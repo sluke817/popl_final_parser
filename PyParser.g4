@@ -19,7 +19,7 @@ block: VAR ;
 assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
 // integer assignments
-number_assignment: VAR asgn_operator (NUMBER | arithmetic | VAR) ;
+number_assignment: VAR ASSIGN_OP (NUMBER | arithmetic | VAR) ;
 
 // string assignments
 string_assignment: VAR ('=' | '+=') (STRING | concat | VAR) ;
@@ -30,31 +30,31 @@ array_assignment: VAR '=' ARRAY;
 // boolean assignments
 boolean_assignment: VAR '=' boolean_expression ;
 
-asgn_operator: '=' | '+=' | '-=' | '*=' | '/=' ;
-
 // handling for doubles/floats and variables tbd
-arithmetic: NUMBER arith_operator NUMBER ;
+arithmetic: NUMBER ARITH_OP NUMBER ;
 
-// concatonation of strings
+// concatenation of strings
 concat: STRING ('+') STRING ;
-
-// basic arithmetic operators
-arith_operator: '+' | '-' | '*' | '/' | '%' ;
-
-// boolean operators
-AND: 'and' ;
-OR: 'or' ;
-NOT: 'not' ;
-boolean_operator: AND | OR ;
 
 // basic boolean logic
 boolean_expression: BOOLEAN
-                    | boolean_expression boolean_operator boolean_expression
+                    | boolean_expression BOOL_OP boolean_expression
                     | NOT boolean_expression ;
 
 
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9])* ;
+
+
+// basic arithmetic operators
+ARITH_OP: '+' | '-' | '*' | '/' | '%' ;
+ASSIGN_OP: '=' | '+=' | '-=' | '*=' | '/=' ;
+
+// boolean operators
+AND: 'and' ;
+OR: 'or' ;
+NOT: 'not' ;
+BOOL_OP: AND | OR ;
 
 // ARRAY of single type
 ARRAY: '[' (((STRING ',')+ STRING) | STRING) ']'
