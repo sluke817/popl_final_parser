@@ -4,7 +4,8 @@ prog: assignment+;
 assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
 // integer assignments
-number_assignment: VAR ASSIGN_OP (INT | FLOAT | arithmetic | VAR) ;
+number_assignment: VAR ARITH_OP? '=' number_operand (ARITH_OP number_operand)*;
+number_operand: INT | FLOAT | VAR ;
 
 // string assignments
 string_assignment: VAR ('=' | '+=') (STRING | concat | VAR) ;
@@ -14,9 +15,6 @@ array_assignment: VAR '=' '[' ((STRING (',' STRING)*)? | (INT (',' INT)*)? | (FL
 
 // boolean assignments
 boolean_assignment: VAR '=' boolean_expression ;
-
-// handling for doubles/floats and variables tbd
-arithmetic: (INT | FLOAT) ARITH_OP (INT | FLOAT) ;
 
 // concatenation of strings
 concat: STRING ('+') STRING ;
@@ -30,8 +28,7 @@ boolean_expression: BOOLEAN
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9] | '_')* ;
 
-// basic arithmetic assignments and operators
-ASSIGN_OP: '=' | '=+' | '=-' | '=*' | '=/' | '=%' ;
+// basic arithmetic operators
 ARITH_OP: '+' | '-' | '*' | '/' | '%' ;
 
 // boolean operators
