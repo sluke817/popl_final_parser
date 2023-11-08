@@ -16,7 +16,7 @@ statement: block | (assignment (';' assignment)* ';'? NEWLINE) ;
 // block is just a placeholder for when we eventually add if, while, etc.
 block: VAR ;
 
-assignment: number_assignment | string_assignment | array_assignment ;
+assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
 // integer assignments
 number_assignment: VAR asgn_operator (NUMBER | arithmetic | VAR) ;
@@ -26,6 +26,9 @@ string_assignment: VAR ('=' | '+=') (STRING | concat | VAR) ;
 
 // array assignments
 array_assignment: VAR '=' ARRAY;
+
+// boolean assignments
+boolean_assignment: VAR '=' boolean_expression ;
 
 asgn_operator: '=' | '+=' | '-=' | '*=' | '/=' ;
 
@@ -37,6 +40,17 @@ concat: STRING ('+') STRING ;
 
 // basic arithmetic operators
 arith_operator: '+' | '-' | '*' | '/' | '%' ;
+
+// boolean operators
+AND: 'and' ;
+OR: 'or' ;
+NOT: 'not' ;
+boolean_operator: AND | OR ;
+
+// basic boolean logic
+boolean_expression: BOOLEAN
+                    | boolean_expression boolean_operator boolean_expression
+                    | NOT boolean_expression ;
 
 
 // VAR cannot start with a number
@@ -52,10 +66,15 @@ ARRAY: '[' (((STRING ',')+ STRING) | STRING) ']'
 STRING : '\'' (CHAR | INT)* '\'' 
         | '"' (CHAR | INT)* '"' ;
 
-CHAR : [a-z] | [A-Z];
-NUMBER : INT | FLOAT
-FLOAT (INT)* '.' (INT)+
+CHAR : [a-z] | [A-Z] ;
+NUMBER : INT | FLOAT ;
+FLOAT : (INT)* '.' (INT)+ ;
 INT : [0-9]+ ;
+BOOLEAN : TRUE | FALSE ;
+
+// BOOLEAN can be True or False
+TRUE: 'True';
+FALSE: 'False';
 
 // TODO: Need to somehow account for the indentation sensitivity in Python
 WS : [ \t\f]+ -> skip ;
