@@ -1,5 +1,7 @@
 grammar PyParser;
-prog: assignment+;
+prog: statement+;
+
+statement: assignment | if_block ;
 
 assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
@@ -24,6 +26,17 @@ boolean_expression: BOOLEAN
                     | boolean_expression BOOL_OP boolean_expression
                     | 'not' boolean_expression ;
 
+if_block: 'if' (VAR (COND_OP (VAR | number_operand | STRING))?) 
+            | ((VAR COND_OP)? boolean_expression) ':' 
+            ('\n' '\t' assignment)+ //Deals with the indentations
+            (elif_block | else_block)? ;
+
+elif_block: 'elif' (VAR (COND_OP (VAR | number_operand | STRING))?) 
+            | ((VAR COND_OP)? boolean_expression) ':' 
+            ('\n' '\t' assignment)+ //Deals with the indentations
+            (elif_block | else_block)? ;
+
+else_block: 'else' ':' ('\n' '\t' assignment)+ ;
 
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9] | '_')* ;
@@ -33,6 +46,9 @@ ARITH_OP: '+' | '-' | '*' | '/' | '%' ;
 
 // boolean operators
 BOOL_OP: 'and' | 'or' ;
+
+// conditional operators
+COND_OP: '<' | '<=' | '>' | '>=' | '==' | '!=' ;
 
 // *** basic data types ***
 // strings can have single or double quotes
@@ -45,4 +61,4 @@ BOOLEAN : 'True' | 'False' ;
 // TODO: Need to somehow account for the indentation sensitivity in Python
 WS : [ \t\f]+ -> skip ;
 
-NEWLINE : [\r\n] -> skip;
+NEWLINE : [\r\n] -> skip ;
