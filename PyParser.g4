@@ -1,5 +1,5 @@
 grammar PyParser;
-prog: statement+;
+prog: statement+ EOF;
 
 statement: assignment | if_block ;
 
@@ -59,6 +59,4 @@ CHAR : [a-z] | [A-Z] ;
 BOOLEAN : 'True' | 'False' ;
 
 // TODO: Need to somehow account for the indentation sensitivity in Python
-WS : [ \t\f]+ -> skip ;
-
-NEWLINE : [\r\n] -> skip ;
+WS : [\r\n\t\f]+ -> skip ;
