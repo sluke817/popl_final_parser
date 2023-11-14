@@ -23,14 +23,17 @@ boolean_expression: BOOLEAN
                     | boolean_expression BOOL_OP boolean_expression
                     | 'not' boolean_expression ;
 
+// TODO fix conditionals to where and/or work, parentheses
+// fix line where there is just a tab (line 40 on deliverable testcase 2)
+// when these issues are removed from deliverable testcase 2, it passes
 if_block: 'if' (VAR (COND_OP (VAR | number_operand | STRING))?) ':' NEWLINE
-    INDENT assignment+ OUTDENT (elif_block | else_block)?;
+    (INDENT assignment)+ (elif_block | else_block)?;
 
 elif_block: 'elif' (VAR (COND_OP (VAR | number_operand | STRING))?) ':' NEWLINE
-    INDENT assignment+ OUTDENT (elif_block | else_block)?;
+    (INDENT assignment)+ (elif_block | else_block)?;
 
 else_block: 'else' ':' NEWLINE
-    INDENT assignment+ OUTDENT;
+    (INDENT assignment)+;
 
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9] | '_')* ;
@@ -46,15 +49,14 @@ COND_OP: '<' | '<=' | '>' | '>=' | '==' | '!=' ;
 
 // *** basic data types ***
 // strings can have single or double quotes
-STRING: '\'' (CHAR | INT)* '\'' | '"' (CHAR | INT)* '"' ;
-FLOAT : [0-9]+ '.' [0-9]+ ;
-INT : [0-9]+ ;
+STRING: '\'' (CHAR | INT | ' ')* '\'' | '"' (CHAR | INT | ' ')* '"' ;
+FLOAT : '-'? [0-9]+ '.' [0-9]+ ;
+INT : '-'? [0-9]+ ;
 CHAR : [a-z] | [A-Z] ;
 BOOLEAN : 'True' | 'False' ;
 
 NEWLINE: '\r'? '\n';
 INDENT: '\t';
-OUTDENT: '\n' | EOF;
 
 // Skip whitespace
 WS : [ \r\n\f]+ -> skip ;
