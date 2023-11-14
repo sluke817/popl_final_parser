@@ -10,11 +10,12 @@ def main(argv):
     stream = CommonTokenStream(lexer)
     parser = PyParserParser(stream)
     tree = parser.prog()
-    #print(tree.toStringTree(recog=parser))
+    print(tree.toStringTree(recog=parser))
+    
     if parser.getNumberOfSyntaxErrors() > 0:
         print("failed")
     else:
         print("passed!")
-
+        
 if __name__ == '__main__':
     main(sys.argv)

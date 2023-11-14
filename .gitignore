@@ -9,3 +9,4 @@ PyParserParser.java
 PyParserLexer.py
 PyParserListener.py
 PyParserParser.py
+__pycache__/
