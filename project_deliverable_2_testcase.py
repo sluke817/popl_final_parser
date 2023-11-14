@@ -31,18 +31,18 @@ if var1 > var2:
 	arith_op1 = 1 + 2
 	assign1 = "text data"
 
-if var1 <= var2 and var3 == var4:
+if var1 <= var2:
 	arith_op1 = 1 + 2
 	assign1 = "text data"
 else:
 	arith_op4 = 4.2 * 10
 	arith_op3 *= arith_op4
-	
+
 data = 0
 
-if var1 != var2 or var3 >= var4:
+if var1 != var2:
 	flag = True
-elif (not flag) and var3 > 10:
+elif var3 > 10:
 	flag = False
 else:
 	data = -1
