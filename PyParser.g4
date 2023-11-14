@@ -59,4 +59,4 @@ CHAR : [a-z] | [A-Z] ;
 BOOLEAN : 'True' | 'False' ;
 
 // TODO: Need to somehow account for the indentation sensitivity in Python
-WS : [ \r\n\t\f]+ -> skip ;
+WS : [ \r\n\f]+ -> skip ;
