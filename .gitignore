@@ -10,3 +10,4 @@ PyParserLexer.py
 PyParserListener.py
 PyParserParser.py
 __pycache__/
+parseEnv/

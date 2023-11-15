@@ -12,6 +12,7 @@ number_operand: INT | FLOAT | VAR ;
 // string assignments
 string_assignment: VAR ('=' | '+=') (STRING | VAR) NEWLINE?;
 
+// TODO: warning(154): PyParser.g4:18:0: rule array_assignment contains an optional block with at least one alternative that can match an empty string
 // array assignments
 array_assignment: VAR '=' '[' ((STRING (',' STRING)*)? | (INT (',' INT)*)? | (FLOAT (',' FLOAT)*)?)? ']' NEWLINE?;
 
@@ -23,19 +24,28 @@ boolean_expression: BOOLEAN
                     | boolean_expression BOOL_OP boolean_expression
                     | 'not' boolean_expression ;
 
-// TODO fix conditionals with parentheses
+// TODO 
 // fix line where there is just a tab (line 40 on deliverable testcase 2)
 // when these issues are removed from deliverable testcase 2, it passes
-if_block: 'if' if_condition (BOOL_OP if_condition)* ':' NEWLINE
-    (INDENT assignment)+ (elif_block | else_block)?;
+if_block: 'if' complex_conditional ':' NEWLINE
+    (INDENT statement)+ (elif_block | else_block)?;
 
-elif_block: 'elif' if_condition (BOOL_OP if_condition)* ':' NEWLINE
-    (INDENT assignment)+ (elif_block | else_block)?;
+elif_block: 'elif' complex_conditional ':' NEWLINE
+    (INDENT statement)+ (elif_block | else_block)?;
 
 else_block: 'else' ':' NEWLINE
-    (INDENT assignment)+;
+    (INDENT statement)+;
 
-if_condition: (VAR (COND_OP (VAR | number_operand | STRING))?) ;
+// handles boolean expressions in conditional statements if/elif 
+// It supports comparisons,and/or,not), and nested expressions with parentheses
+complex_conditional:
+      VAR (COND_OP comp_element)?
+    | complex_conditional BOOL_OP complex_conditional
+    | 'not' complex_conditional
+    | '(' complex_conditional ')';
+    
+//added complex element for modularity 
+comp_element: VAR | number_operand | STRING;
 
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9] | '_')* ;
