@@ -23,17 +23,19 @@ boolean_expression: BOOLEAN
                     | boolean_expression BOOL_OP boolean_expression
                     | 'not' boolean_expression ;
 
-// TODO fix conditionals to where and/or work, parentheses
+// TODO fix conditionals with parentheses
 // fix line where there is just a tab (line 40 on deliverable testcase 2)
 // when these issues are removed from deliverable testcase 2, it passes
-if_block: 'if' (VAR (COND_OP (VAR | number_operand | STRING))?) ':' NEWLINE
+if_block: 'if' if_condition (BOOL_OP if_condition)* ':' NEWLINE
     (INDENT assignment)+ (elif_block | else_block)?;
 
-elif_block: 'elif' (VAR (COND_OP (VAR | number_operand | STRING))?) ':' NEWLINE
+elif_block: 'elif' if_condition (BOOL_OP if_condition)* ':' NEWLINE
     (INDENT assignment)+ (elif_block | else_block)?;
 
 else_block: 'else' ':' NEWLINE
     (INDENT assignment)+;
+
+if_condition: (VAR (COND_OP (VAR | number_operand | STRING))?) ;
 
 // VAR cannot start with a number
 VAR : ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9] | '_')* ;
