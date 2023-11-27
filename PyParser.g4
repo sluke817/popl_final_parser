@@ -70,5 +70,8 @@ BOOLEAN : 'True' | 'False' ;
 NEWLINE: '\r'? '\n';
 INDENT: '\t';
 
+// Ignore comments
+COMMENT : '#' ~[\r\n]* -> skip ;
+
 // Skip whitespace
 WS : [ \r\n\f]+ -> skip ;
