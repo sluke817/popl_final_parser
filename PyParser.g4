@@ -1,7 +1,7 @@
 grammar PyParser;
 prog: statement+ EOF;
 
-statement: assignment | if_block;
+statement: assignment | if_block | while_block | for_block;
 
 assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
@@ -36,13 +36,22 @@ elif_block: 'elif' complex_conditional ':' NEWLINE
 else_block: 'else' ':' NEWLINE
     (INDENT statement)+;
 
+// While loop
+while_block: 'while' complex_conditional ':' NEWLINE
+    (INDENT statement)+ else_block?;
+
+// For loop
+for_block: 'for' 'in' ':' NEWLINE
+    (INDENT statement)+ else_block?;
+
 // handles boolean expressions in conditional statements if/elif 
 // It supports comparisons,and/or,not), and nested expressions with parentheses
 complex_conditional:
       VAR (COND_OP comp_element)?
     | complex_conditional BOOL_OP complex_conditional
     | 'not' complex_conditional
-    | '(' complex_conditional ')';
+    | '(' complex_conditional ')'; 
+    // I think we might need '| Boolean' here so we can do 'if True' or 'while True'
     
 //added complex element for modularity 
 comp_element: VAR | number_operand | STRING;
