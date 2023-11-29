@@ -41,7 +41,7 @@ while_block: 'while' complex_conditional ':' NEWLINE
     (INDENT statement)+ else_block?;
 
 // For loop
-for_block: 'for' 'in' ':' NEWLINE
+for_block: 'for' VAR 'in' (VAR | ('range(' INT ',' INT ')')) ':' NEWLINE
     (INDENT statement)+ else_block?;
 
 // handles boolean expressions in conditional statements if/elif 
@@ -50,8 +50,9 @@ complex_conditional:
       VAR (COND_OP comp_element)?
     | complex_conditional BOOL_OP complex_conditional
     | 'not' complex_conditional
-    | '(' complex_conditional ')'; 
-    // I think we might need '| Boolean' here so we can do 'if True' or 'while True'
+    | '(' complex_conditional ')'
+    | BOOLEAN; 
+    
     
 //added complex element for modularity 
 comp_element: VAR | number_operand | STRING;
