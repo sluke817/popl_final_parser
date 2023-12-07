@@ -27,22 +27,22 @@ boolean_expression: BOOLEAN
 // TODO 
 // fix line where there is just a tab (line 40 on deliverable testcase 2)
 // when these issues are removed from deliverable testcase 2, it passes
-if_block: 'if' complex_conditional ':' NEWLINE
-    (INDENT statement)+ (elif_block | else_block)?;
+if_block: (INDENT*) 'if' complex_conditional ':' NEWLINE
+    ((INDENT+) statement)+ (elif_block | else_block)?;
 
-elif_block: 'elif' complex_conditional ':' NEWLINE
-    (INDENT statement)+ (elif_block | else_block)?;
+elif_block: (INDENT*) 'elif' complex_conditional ':' NEWLINE
+    ((INDENT+) statement)+ (elif_block | else_block)?;
 
-else_block: 'else' ':' NEWLINE
-    (INDENT statement)+;
+else_block: (INDENT*) 'else' ':' NEWLINE
+    ((INDENT+) statement)+;
 
 // While loop
-while_block: 'while' complex_conditional ':' NEWLINE
-    (INDENT statement)+ else_block?;
+while_block: (INDENT*) 'while' complex_conditional ':' NEWLINE
+    ((INDENT+) statement)+ else_block?;
 
 // For loop
-for_block: 'for' VAR 'in' (VAR | ('range(' INT ',' INT ')')) ':' NEWLINE
-    (INDENT statement)+ else_block?;
+for_block: (INDENT*) 'for' VAR 'in' (VAR | ('range(' INT ',' INT ')')) ':' NEWLINE
+    ((INDENT+) statement)+ else_block?;
 
 // handles boolean expressions in conditional statements if/elif 
 // It supports comparisons,and/or,not), and nested expressions with parentheses
