@@ -79,7 +79,7 @@ BOOLEAN : 'True' | 'False' ;
 
 NEWLINE: '\r'? '\n';
 INDENT: '\t';
-
+MULTI_LINE_COMMENT : '\'\'\'' .*? '\'\'\'' -> skip ;
 // Ignore comments
 COMMENT : '#' ~[\r\n]* -> skip ;
 
