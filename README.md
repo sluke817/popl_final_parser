@@ -21,16 +21,25 @@ As mentioned in these instructions, Python 3 is also necessary for ANTLR and for
 ### How to Use:
 After installing ANTLR, run the following command to build the parser from the grammar file:
 ```
-antlr4 -Dlanguage=Python3 PyParser.g4
+antlr4 PyParser.g4 -Dlanguage=Python3
 ```
 To run the parser on a Python file, execute
 ```
-python Driver.py [input_filename].py
+python3 file_driver.py [input_filename].py
 ```
 For example,
 ```
-python Driver.py project_deliverable_3_testcase.py
+python3 file_driver.py project_deliverable_3_testcase.py
 ```
 This will output a text version of the parse tree followed by either “passed!” if the input was valid Python syntax, or “failed” if the input was invalid. Remember that this parser only covers the aforementioned features—it does not support every possible Python statement.
+
+To see the parse trees, please execute: 
+```
+antlr4-parse PyParser.g4 prog <filename> -gui 
+```
+For example,
+```
+antlr4-parse PyParser.g4 prog project_deliverable_3_testcase.py -gui
+```
 
 ### Demo Video:
