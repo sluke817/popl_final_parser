@@ -1,7 +1,7 @@
 grammar PyParser;
 prog: statement+ EOF;
 
-statement: assignment | if_block | while_block | for_block;
+statement: assignment | if_block | while_block | for_block | '\t\r\n';
 
 assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
@@ -24,9 +24,6 @@ boolean_expression: BOOLEAN
                     | boolean_expression BOOL_OP boolean_expression
                     | 'not' boolean_expression ;
 
-// TODO 
-// fix line where there is just a tab (line 40 on deliverable testcase 2)
-// when these issues are removed from deliverable testcase 2, it passes
 if_block: (INDENT*) 'if' complex_conditional ':' NEWLINE
     ((INDENT+) statement)+ (elif_block | else_block)?;
 
@@ -46,11 +43,20 @@ for_block: (INDENT*) 'for' VAR 'in' (VAR | ('range(' INT ',' INT ')')) ':' NEWLI
 
 // handles boolean expressions in conditional statements if/elif 
 // It supports comparisons,and/or,not), and nested expressions with parentheses
-complex_conditional:
-      ((VAR (COND_OP comp_element)?) (BOOL_OP (COND_OP comp_element)?)?)*
-    | 'not' complex_conditional
+complex_conditional
+    : not_expression (('and'|'or') not_expression)*
+    ;
+
+not_expression
+    : 'not' not_expression
+    | primary_expression
+    ;
+
+primary_expression
+    : BOOLEAN
     | '(' complex_conditional ')'
-    | BOOLEAN;
+    | VAR (COND_OP comp_element)?
+    ;
     
     
 //added complex element for modularity 
