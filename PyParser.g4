@@ -1,7 +1,7 @@
 grammar PyParser;
 prog: statement+ EOF;
 
-statement: assignment | if_block | while_block | for_block | '\t\r\n';
+statement: assignment | if_block | while_block | for_block | '\t\r\n' | NEWLINE;
 
 assignment: number_assignment | string_assignment | array_assignment | boolean_assignment ;
 
@@ -86,7 +86,7 @@ NEWLINE: '\r'? '\n';
 INDENT: '\t';
 MULTI_LINE_COMMENT : '\'\'\'' .*? '\'\'\'' -> skip ;
 // Ignore comments
-COMMENT : '#' ~[\r\n]* -> skip ;
+COMMENT : '#' ~[\r\n]* ('\r'? '\n') -> skip ;
 
 // Skip whitespace
 WS : [ \r\n\f]+ -> skip ;
