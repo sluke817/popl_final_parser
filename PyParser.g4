@@ -47,11 +47,10 @@ for_block: (INDENT*) 'for' VAR 'in' (VAR | ('range(' INT ',' INT ')')) ':' NEWLI
 // handles boolean expressions in conditional statements if/elif 
 // It supports comparisons,and/or,not), and nested expressions with parentheses
 complex_conditional:
-      VAR (COND_OP comp_element)?
-    | complex_conditional BOOL_OP complex_conditional
+      ((VAR (COND_OP comp_element)?) (BOOL_OP (COND_OP comp_element)?)?)*
     | 'not' complex_conditional
     | '(' complex_conditional ')'
-    | BOOLEAN; 
+    | BOOLEAN;
     
     
 //added complex element for modularity 
@@ -71,7 +70,7 @@ COND_OP: '<' | '<=' | '>' | '>=' | '==' | '!=' ;
 
 // *** basic data types ***
 // strings can have single or double quotes
-STRING: '\'' (CHAR | INT | ' ')* '\'' | '"' (CHAR | INT | ' ')* '"' ;
+STRING: '\'' (CHAR | INT | ' ')* '\'' | '"' (CHAR | INT | ' ' | '.' | '\'')* '"' ;
 FLOAT : '-'? [0-9]+ '.' [0-9]+ ;
 INT : '-'? [0-9]+ ;
 CHAR : [a-z] | [A-Z] ;
